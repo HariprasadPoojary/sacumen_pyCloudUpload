@@ -1,4 +1,4 @@
 test_intrv.py
 test_pyCloudUpload.py
 venv_test/*
-pytest_cache/*
+__pycache__/*

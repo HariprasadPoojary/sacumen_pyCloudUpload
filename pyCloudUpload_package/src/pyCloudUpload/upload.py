@@ -1,7 +1,10 @@
 from pathlib import Path
 from .exceptions import InvalidUploadDirectoryException
 
+# AWS & GCP imports
 from google.cloud import storage as gcp_storage
+import boto3
+from botocore.exceptions import ClientError
 
 
 class Upload:
@@ -67,25 +70,23 @@ class Upload:
 
     def upload_to_aws(
         self,
-        aws_secret_key: str,
         bucket,
-        object_name=None,
+        object_name: str = None,
         file_type: list | tuple = [],
+        args=None,
     ) -> bool:
         """Upload to AWS, core code for AWS upload from -> https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html
 
         Args:
-            aws_secret_key (str): AWS Secret Key
             bucket (_type_): Bucket Name
-            object_name (_type_, optional): Object name. Defaults to None.
+            object_name (str, optional): Object name. Defaults to None.
             file_type_extenion (list | tuple, optional): File extensions, this will upload all the files found in the directory. Defaults to [].
             files (list[Path  |  str], optional): List of file paths to upload. Defaults to [].
+            args: Additional arguments to S3 client
 
         Returns:
             bool: True if file was uploaded, else False
         """
-        import boto3
-        from botocore.exceptions import ClientError
 
         s3_client = boto3.client("s3")
         files_to_upload = None
@@ -101,7 +102,9 @@ class Upload:
                 object_name = filename
             # Upload the file
             try:
-                response = s3_client.upload_file(str(file_path), bucket, object_name)
+                response = s3_client.upload_file(
+                    str(file_path), bucket, object_name, ExtraArgs=args
+                )
             except ClientError as e:
                 return False
         return True
