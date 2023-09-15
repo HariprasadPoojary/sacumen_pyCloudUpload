@@ -8,5 +8,6 @@ src/pyCloudUpload/upload.py
 src/pyCloudUpload_package.egg-info/PKG-INFO
 src/pyCloudUpload_package.egg-info/SOURCES.txt
 src/pyCloudUpload_package.egg-info/dependency_links.txt
+src/pyCloudUpload_package.egg-info/requires.txt
 src/pyCloudUpload_package.egg-info/top_level.txt
 tests/test_unit.py

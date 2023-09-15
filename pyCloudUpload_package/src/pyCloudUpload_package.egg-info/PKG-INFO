@@ -13,6 +13,9 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: boto3
+Requires-Dist: google-cloud-storage
+Requires-Dist: pytest
 
 # `pyCloudUpload`
 
@@ -38,7 +41,7 @@ The pyCloudUpload is a Python package designed to simplify the process of readin
     ```
 4. **Install the package**
     ```bash
-    pip install pyCloudUpload.whl
+    pip install pyCloudUpload_package-1.0.0-py3-none-any.whl
     ```
 5. **Verification:** Import the package in Python to verify the installation:
     ```python
