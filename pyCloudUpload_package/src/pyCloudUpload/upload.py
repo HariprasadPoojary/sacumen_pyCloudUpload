@@ -1,6 +1,8 @@
 from pathlib import Path
 from .exceptions import InvalidUploadDirectoryException
 
+from google.cloud import storage as gcp_storage
+
 
 class Upload:
     def __init__(self, directory: str | Path) -> None:
@@ -106,28 +108,25 @@ class Upload:
 
     def upload_to_gcp(
         self,
-        credentials_dict: dict,
-        bucket,
-        project,
+        bucket_name: str,
+        credentials_file: str,
         file_type: list | tuple = [],
     ) -> bool:
-        """Upload to Google Cloud, core code for GCP upload from -> https://stackoverflow.com/questions/62125584/file-upload-using-pythonlocal-system-to-google-cloud-storage
+        """Upload to Google Cloud, core code for GCP upload from -> https://www.educative.io/answers/how-to-upload-a-file-to-google-cloud-storage-on-python-3
 
         Args:
-            credentials_dict (dict): GCP credentials dictionary
-            bucket (_type_): Bucket Name
-            project (_type_): Project Name
+            bucket_name (str): Bucket Name
+            credentials_file (str): GCP credentials json file path
             file_type (list | tuple, optional): List of file paths to upload. Defaults to [].
 
         Returns:
             bool: True if file was uploaded, else False
         """
-        from gcloud import storage
-        from oauth2client.service_account import ServiceAccountCredentials
 
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict)
-        client = storage.Client(credentials=credentials, project=project)
-        bucket = client.get_bucket(bucket)
+        # Initialize the Google Cloud Storage client with the credentials
+        storage_client = gcp_storage.Client.from_service_account_json(credentials_file)
+        # Get the target bucket
+        bucket = storage_client.bucket(bucket_name)
 
         if file_type:  # for extesions given by the user to upload all the files
             files_to_upload = self.__get_files_filtered_with_extensions(file_type)
@@ -136,6 +135,7 @@ class Upload:
 
         for filename, file_path in files_to_upload:
             try:
+                # Upload the file to the bucket
                 blob = bucket.blob(filename)
                 blob.upload_from_filename(file_path)
             except Exception:
