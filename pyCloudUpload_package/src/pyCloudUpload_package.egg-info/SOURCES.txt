@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/pyCloudUpload/__init__.py
+src/pyCloudUpload/exceptions.py
+src/pyCloudUpload/upload.py
+src/pyCloudUpload_package.egg-info/PKG-INFO
+src/pyCloudUpload_package.egg-info/SOURCES.txt
+src/pyCloudUpload_package.egg-info/dependency_links.txt
+src/pyCloudUpload_package.egg-info/top_level.txt
+tests/test_unit.py
